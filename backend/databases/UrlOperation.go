@@ -22,7 +22,7 @@ func QueryUrl(short string) (*model.Url, error) {
 func UpdateUrl(url *model.Url) error { //
 	var tmp model.Url
 	tmp = *url
-	err := model.DB.Debug().Where("origin=?", tmp.Origin).Updates(&tmp).Error
+	err := model.DB.Debug().Where("origin=?", tmp.Origin).Updates(tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}

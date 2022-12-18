@@ -13,7 +13,6 @@ import (
 
 func RedictMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		fmt.Println("111")
 		short := c.Param("hash")
 		url, err := databases.QueryUrl(short)
 		if err != nil {
@@ -35,11 +34,11 @@ func RedictMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			return response.SendResponse(c, 400, "The link expired")
 		}
 		// 重定向
+		// 301 会缓存 直接跳转
 		err = c.Redirect(http.StatusTemporaryRedirect, "/"+target)
 		if err != nil {
 			logrus.Error(err)
 			return response.SendResponse(c, 400, "redict error")
-
 		}
 		return next(c)
 	}
