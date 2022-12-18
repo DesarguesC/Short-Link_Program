@@ -1,0 +1,19 @@
+# IDE
+.idea/
+.vscode/
+
+# BUILD
+build/
+*.exe
+*.so
+*.dll
+
+# DOCS & CONFIG
+docs/
+conf.yaml
+
+# SECRET
+*.pem
+
+# LOGS
+*.log
