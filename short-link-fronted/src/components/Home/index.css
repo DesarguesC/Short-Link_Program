@@ -1,0 +1,25 @@
+li {
+    list-style-type: none;
+    display: inline;
+}
+
+header {
+    text-align: center;
+    box-shadow: 10px;
+}
+
+Link {
+    color: rgb(107, 107, 107);
+    font-size: 23px;
+    padding: 0 15px;
+}
+
+body {
+    display: flex;
+}
+
+form {
+    margin: auto;
+    margin-top: 10px;
+    width: 60%;
+}
