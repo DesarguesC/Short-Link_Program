@@ -86,37 +86,22 @@ export default class Register extends Component {
                             onChange={this.saveFormData('passwordConfirm')} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="passwordConfirm" className="form-label">密保问题一</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>请选择密保问题一</option>
-                            <option value="1">您小学班主任的名字是？</option>
-                            <option value="2">您最熟悉的童年好友名字是？</option>
-                            <option value="3">对您影响最大的人名字是？</option>
-                        </select>
+                        <label htmlFor="passwordConfirm" className="form-label">密保问题</label>
                     </div>
                     <div className="mb-3">
-                        {/* <label htmlFor="passwordConfirm" className="form-label">Password Confirm</label> */}
-                        <input type="password"
+                        <input type="text"
                             className={classnames("form-control")}
-                            id="passwordConfirm"
+                            placeholder="请输入密保问题"
+                            id="secQ"
                             name="secQ"
                             required
                             onChange={this.saveFormData('secQ')} />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="passwordConfirm" className="form-label">密保问题二</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                            <option selected>请选择密保问题二</option>
-                            <option value="1">您的学号（或工号）是？</option>
-                            <option value="2">您母亲的生日是？</option>
-                            <option value="3">您高中班主任的名字是？</option>
-                        </select>
-                    </div>
-                    <div className="mb-3">
-                        {/* <label htmlFor="passwordConfirm" className="form-label">Password Confirm</label> */}
-                        <input type="password"
+                        <input type="text"
                             className={classnames("form-control")}
-                            id="passwordConfirm"
+                            placeholder="请输入密保问题的答案"
+                            id="secA"
                             name="secA"
                             required
                             onChange={this.saveFormData('secA')} />
