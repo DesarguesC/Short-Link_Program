@@ -19,14 +19,27 @@ func CreateUrl(c echo.Context) (err error) {
 	}
 
 	url := new(model.Url)
+	var IsDefined bool = false // 是否自定义
 	url.Origin = data.Origin
 	url.Comment = data.Comment
 	url.ExpireTime = data.ExpireTime
 	url.StartTime = data.StartTime
+	if data.Short != "" && data.Short[0] != ' ' {
+		IsDefined = true
+		url.Short = data.Short // 自定义
+	} else if data.Short[0] == ' ' {
+		return response.SendResponse(c, 400, "开头不能有空格")
+	}
 	url.Enable = "able"
 	err = model.DB.Debug().Where("origin = ?", (url).Origin).First(url).Error
 	if err != gorm.ErrRecordNotFound {
-		return response.SendResponse(c, 400, "have created")
+		return response.SendResponse(c, 400, "have created same origin")
+	}
+	if IsDefined {
+		err = model.DB.Debug().Where("short = ?", (url).Short).First(url).Error
+		if err != gorm.ErrRecordNotFound {
+			return response.SendResponse(c, 400, "have created same short")
+		}
 	}
 	err = model.DB.Debug().Create(url).Error
 	//fmt.Println((*url).Id)
@@ -34,7 +47,9 @@ func CreateUrl(c echo.Context) (err error) {
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "dbAdd err")
 	}
-	GenerateShortUrl(url)
+	if !IsDefined {
+		GenerateShortUrl(url)
+	}
 	err = model.DB.Debug().Updates(url).Error
 	if err != nil {
 		logrus.Error(err)
@@ -74,7 +89,7 @@ func UpdateUrl(c echo.Context) (err error) { //url details
 	if err != nil {
 		return response.SendResponse(c, 400, "update failed")
 	}
-	return response.SendResponse(c, 200, "update succeed", *url) //
+	return response.SendResponse(c, 200, "update succeed", url.Origin) //
 }
 
 func DelUrl(c echo.Context) (err error) { //url details

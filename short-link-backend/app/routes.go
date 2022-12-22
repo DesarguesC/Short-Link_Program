@@ -14,7 +14,6 @@ func ping(c echo.Context) error {
 func addRoutes() {
 	visit := e.Group("visit", middleware.RedictMiddleware)
 	visit.GET("/:hash", controller.Visit)
-
 	api := e.Group("api")
 	api.GET("/doc/*", echoSwagger.WrapHandler)
 	api.GET("/ping", ping)

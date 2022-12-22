@@ -4,6 +4,7 @@ import "time"
 
 type CreateInput struct { // 前端输入
 	Origin     string    `gorm:"type:varchar(200)" form:"origin" json:"origin"`
+	Short      string    `gorm:"type:varchar(200)" form:"short" json:"short"`
 	Comment    string    `gorm:"type:varchar(100)" form:"comment" json:"comment"`
 	StartTime  time.Time `gorm:"type:datetime;autoCreateTime" json:"start-time"`
 	ExpireTime time.Time `gorm:"type:datetime" json:"expire-time"`
