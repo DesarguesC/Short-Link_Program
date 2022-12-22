@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 	"go-svc-tpl/app/response"
@@ -17,17 +18,17 @@ func CreateUrl(c echo.Context) (err error) {
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "Bind Failed")
 	}
-
 	url := new(model.Url)
 	var IsDefined bool = false // 是否自定义
 	url.Origin = data.Origin
 	url.Comment = data.Comment
 	url.ExpireTime = data.ExpireTime
 	url.StartTime = data.StartTime
+	fmt.Println(2)
 	if data.Short != "" && data.Short[0] != ' ' {
 		IsDefined = true
 		url.Short = data.Short // 自定义
-	} else if data.Short[0] == ' ' {
+	} else if data.Short != "" && data.Short[0] == ' ' {
 		return response.SendResponse(c, 400, "开头不能有空格")
 	}
 	url.Enable = "able"
@@ -42,18 +43,20 @@ func CreateUrl(c echo.Context) (err error) {
 		}
 	}
 	err = model.DB.Debug().Create(url).Error
-	//fmt.Println((*url).Id)
 	if err != nil {
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "dbAdd err")
 	}
+	fmt.Println(5)
 	if !IsDefined {
 		GenerateShortUrl(url)
-	}
-	err = model.DB.Debug().Updates(url).Error
-	if err != nil {
-		logrus.Error(err)
-		return response.SendResponse(c, 400, "update error")
+		logrus.Info("生成链接")
+
+		err = model.DB.Debug().Updates(url).Error
+		if err != nil {
+			logrus.Error(err)
+			return response.SendResponse(c, 400, "update error")
+		}
 	}
 	return response.SendResponse(c, 200, "create is ok", *url)
 }
