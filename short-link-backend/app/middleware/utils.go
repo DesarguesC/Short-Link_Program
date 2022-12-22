@@ -1,4 +1,4 @@
-package middleware
+package midware
 
 import (
 	"github.com/go-playground/validator/v10"

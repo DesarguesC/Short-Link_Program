@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 	"go-svc-tpl/app/controller"
 	"go-svc-tpl/app/middleware"
@@ -12,7 +13,8 @@ func ping(c echo.Context) error {
 }
 
 func addRoutes() {
-	visit := e.Group("visit", middleware.RedictMiddleware)
+	e.Use(middleware.CORS())
+	visit := e.Group("visit", midware.RedictMiddleware)
 	visit.GET("/:hash", controller.Visit)
 	api := e.Group("api")
 	api.GET("/doc/*", echoSwagger.WrapHandler)
@@ -24,12 +26,12 @@ func addRoutes() {
 	api.POST("/url/Pause", controller.PauseUrl)
 	api.POST("/url/Continue", controller.ContinueUrl)
 
-	api.POST("/user/register", controller.Users_register, middleware.CheckRegister)
-	api.POST("/user/login", controller.User_login, middleware.CheckLogin)
+	api.POST("/user/register", controller.Users_register, midware.CheckRegister)
+	api.POST("/user/login", controller.User_login, midware.CheckLogin)
 	api.POST("/user/logout", controller.User_logout)
-	api.POST("/user/security", controller.User_reset_pwd, middleware.CheckSecure)
+	api.POST("/user/security", controller.User_reset_pwd, midware.CheckSecure)
 	api.POST("/user/info", controller.User_get)
 	api.POST("/user/record/get", controller.User_login_get)
-	api.POST("/user/pwdreset", controller.User_pwd_reset, middleware.CheckReset)
+	api.POST("/user/pwdreset", controller.User_pwd_reset, midware.CheckReset)
 
 }
