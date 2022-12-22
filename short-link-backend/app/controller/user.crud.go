@@ -54,7 +54,7 @@ func Users_register(c echo.Context) error {
 	secQ := (*data).SecQ
 	secA := (*data).SecA
 
-	one := middleware.RegisterStruct{name, email, pwd, secQ, secA}
+	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
 	if invalid_err != nil {
@@ -90,7 +90,7 @@ func User_login(c echo.Context) error {
 	email := a_User.Email
 
 	//fmt.Println(email)
-	one := middleware.LoginStruct{email, pwd}
+	one := midware.LoginStruct{email, pwd}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
 	if invalid_err != nil {
@@ -133,7 +133,7 @@ func User_reset_pwd(c echo.Context) error {
 	secA := (*data).SecA
 	new_pwd := (*data).Pwd_new
 
-	one := middleware.SecurityStruct{name, email, new_pwd, secA}
+	one := midware.SecurityStruct{name, email, new_pwd, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
 	if invalid_err != nil {
@@ -205,7 +205,7 @@ func User_pwd_reset(c echo.Context) error {
 	new_pwd := (*data).Pwdnew
 	old_pwd := (*data).Pwdold
 
-	one := middleware.ResetStruct{name, new_pwd, old_pwd}
+	one := midware.ResetStruct{name, new_pwd, old_pwd}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
 	if invalid_err != nil {

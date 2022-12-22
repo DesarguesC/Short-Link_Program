@@ -14,7 +14,7 @@ func ping(c echo.Context) error {
 
 func addRoutes() {
 	e.Use(middleware.CORS())
-	visit := e.Group("visit", midware.RedictMiddleware)
+	visit := e.Group("visit", midware.RedirectMiddleware)
 	visit.GET("/:hash", controller.Visit)
 	api := e.Group("api")
 	api.GET("/doc/*", echoSwagger.WrapHandler)
@@ -25,7 +25,6 @@ func addRoutes() {
 	api.POST("/url/Delete", controller.DelUrl)
 	api.POST("/url/Pause", controller.PauseUrl)
 	api.POST("/url/Continue", controller.ContinueUrl)
-
 	api.POST("/user/register", controller.Users_register, midware.CheckRegister)
 	api.POST("/user/login", controller.User_login, midware.CheckLogin)
 	api.POST("/user/logout", controller.User_logout)

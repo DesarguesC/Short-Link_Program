@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func RedictMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+func RedirectMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		short := c.Param("hash")
 		url, err := databases.QueryUrl(short)
