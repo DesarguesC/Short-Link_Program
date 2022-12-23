@@ -36,12 +36,12 @@ export default class Home extends Component {
 
     render() {
         return (
-            <form action="" onSubmit={this.handleSubmit}>
+            <form action="">
                 <strong htmlFor="basic-url" className="form-label">原始网址</strong>
                 <div className="input-group mb-3">
                     <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
                         placeholder='在此输入想要缩短的网址' name="origin" required onChange={this.saveFormData('origin')} />
-                    <button type="button" className="btn btn-outline-dark">缩短</button>
+                    <button type="button" className="btn btn-outline-dark" onClick={this.handleSubmit}>缩短</button>
                 </div>
                 <strong htmlFor="basic-url" className="form-label">自定义短链（可选）</strong>
                 <div className="input-group mb-3">
