@@ -6,7 +6,7 @@ export default class Delete extends Component {
   }
 
   fpost = async () => {
-    let res = await fetch('http://localhost:3000/url/delete', {
+    let res = await fetch('/api/url/delete', {
       method: 'post',
       header: {
         'Content-Type': 'application/json'
