@@ -14,7 +14,7 @@ func ping(c echo.Context) error {
 
 func addRoutes() {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"http://localhost:3000", "http://localhost:1962"},
+		AllowOrigins: []string{"http://localhost:3000", "http://localhost:1926"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
 	}))
 	visit := e.Group("visit", midware.RedirectMiddleware)
