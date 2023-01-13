@@ -9,7 +9,7 @@ export default class Login extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("/user/login", {
+    let res = await fetch("http://localhost:1926/api/user/login", {
       method: "post",
       header: {
         "Content-Type": "application/json",

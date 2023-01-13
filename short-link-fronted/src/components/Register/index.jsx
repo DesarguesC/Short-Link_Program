@@ -13,7 +13,7 @@ export default class Register extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("/user/register", {
+    let res = await fetch("http://localhost:1926/api/user/register", {
       method: "post",
       header: {
         "Content-Type": "application/json",

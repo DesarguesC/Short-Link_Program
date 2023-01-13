@@ -9,7 +9,7 @@ export default class Update extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("/url/update", {
+    let res = await fetch("http://localhost:1926/api/url/update", {
       method: "post",
       header: {
         "Content-Type": "application/json",

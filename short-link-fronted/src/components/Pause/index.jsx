@@ -6,7 +6,7 @@ export default class Pause extends Component {
   }
 
   fpost = async () => {
-    let res = await fetch('/url/pause', {
+    let res = await fetch('http://localhost:1926/api/url/pause', {
       method: 'post',
       header: {
         'Content-Type': 'application/json'
