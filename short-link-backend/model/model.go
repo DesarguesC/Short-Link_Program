@@ -9,8 +9,8 @@ type Url struct {
 	Origin     string    `gorm:"type:varchar(200)" form:"origin" json:"origin"`
 	Short      string    `gorm:"type:varchar(40)" form:"short" json:"short"` //?
 	Comment    string    `gorm:"type:varchar(100)" form:"comment" json:"comment"`
-	StartTime  time.Time `gorm:"type:datetime;autoCreateTime" json:"start-time"`
-	ExpireTime time.Time `gorm:"type:datetime" json:"expire-time"` //2022-01-01T08:00:00+08:00
+	StartTime  time.Time `gorm:"type:datetime;autoCreateTime" json:"startTime"`
+	ExpireTime time.Time `gorm:"type:datetime" json:"expireTime"` //2022-01-01T08:00:00+08:00
 	Enable     string    `gorm:"type:varchar(40)" json:"enable"`
 }
 
