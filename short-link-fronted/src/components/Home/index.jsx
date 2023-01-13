@@ -11,7 +11,7 @@ export default class Home extends Component {
     }
 
     fpost = async () => {
-        let res = await fetch('/api/url/create', {
+        let res = await fetch('/url/create', {
             method: 'post',
             header: {
                 'Content-Type': 'application/json'

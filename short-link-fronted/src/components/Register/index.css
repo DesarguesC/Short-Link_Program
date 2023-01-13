@@ -1,9 +1,9 @@
 body {
-    display: flex;
+  display: flex;
 }
 
 form {
-    margin: auto;
-    margin-top: 10px;
-    width: 50%;
+  margin: auto;
+  margin-top: 10px;
+  width: 50%;
 }
