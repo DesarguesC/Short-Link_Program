@@ -37,10 +37,12 @@ func Users_register(c echo.Context) error {
 	//new_user := model.Users{1, name, email, pwd, secQ, secA, current_time}
 
 	err := model.DB.Debug().Find(&new_user).Error
-	if err == nil {
+
+	if err != nil {
 		status = "nil"
-		return response.SendResponse(c, 100, "User's name been used", status)
+		return response.SendResponse(c, 100, "This name has been used", status)
 	}
+
 	(*new_user).Id = (*data).Id
 	(*new_user).Email = (*data).Email
 	(*new_user).Pwd = (*data).Pwd
