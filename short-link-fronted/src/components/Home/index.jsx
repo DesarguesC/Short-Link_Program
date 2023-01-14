@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import "./index.css";
+import axios from "axios";
 
 export default class Home extends Component {
   state = {
     origin: "",
     short: "",
     comment: "",
-    startTime: "",
-    expireTime: "",
+    starTime: "2022-01-01T08:00:00+08:00",
+    expireTime: "2023-11-17T08:00:00+08:00",
   };
 
   fpost = async () => {
+    console.log(this.state);
     let res = await fetch("http://localhost:1926/api/url/create", {
       method: "post",
       header: {
@@ -23,9 +25,19 @@ export default class Home extends Component {
     console.log(json);
   };
 
+  fpost2 = () => {
+    axios({
+      method: "post",
+      url: "http://localhost:1926/api/url/create",
+      data: this.state,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost();
+    this.fpost2();
   };
 
   saveFormData = (dataType) => {
@@ -100,8 +112,8 @@ export default class Home extends Component {
             id="basic-url"
             aria-describedby="basic-addon3"
             placeholder="留空表示不限制"
-            name="startTime"
-            onChange={this.saveFormData("startTime")}
+            name="starttime"
+            onChange={this.saveFormData("starttime")}
           />
         </div>
         <strong htmlFor="basic-url" className="form-label">
