@@ -14,11 +14,13 @@ type CustomValidator struct {
 type RegisterStruct struct {
 	Name string `form:"name" json:"name" query:"name" validate:"excludesall=!@#$%^&*()_-{},ne=nil"`
 	//ID     int    `json:"ID" validate:"required,min=0,max=10"`
-	Email string `form:"email" json:"email" query:"email" validate:"contains=@[.]*.com"`
+	Email string `form:"email" json:"email" query:"email" validate:"contains=@[.]{,}.com"`
 	Pwd   string `form:"pwd" json:"pwd" query:"pwd" validate:"excludesall=!@#$%^&*()_-{}"`
 	SecQ  string `form:"secQ" json:"secQ" query:"secQ" validate:"excludesall=!@#$%^&*()_-{}"`
 	SecA  string `form:"secA" json:"secA" query:"secA" validate:"excludesall=!@#$%^&*()_-{}"`
 }
+
+//
 
 // 登录时的输入字符验证
 type LoginStruct struct {

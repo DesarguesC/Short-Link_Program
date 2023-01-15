@@ -33,16 +33,14 @@ func Users_register(c echo.Context) error {
 	}
 	current_time := time.Now()
 	new_user := new(model.Users)
-	(*new_user).Name = (*data).Name
+	//(*new_user).Name = (*data).Name
 	//new_user := model.Users{1, name, email, pwd, secQ, secA, current_time}
 
-	err := model.DB.Debug().Find(&new_user).Error
-
+	err := model.DB.Find(&new_user, "name = ?", (*data).Name).Error
 	if err != nil {
 		status = "nil"
-		return response.SendResponse(c, 100, "This name has been used", status)
+		return response.SendResponse(c, 100, "Registration Failed: This name has been used", status)
 	}
-
 	(*new_user).Id = (*data).Id
 	(*new_user).Email = (*data).Email
 	(*new_user).Pwd = (*data).Pwd
@@ -59,8 +57,11 @@ func Users_register(c echo.Context) error {
 	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
+
 	if invalid_err != nil {
-		return response.SendResponse(c, 107, "invalid register info format", name, email, pwd, secQ, secA)
+		//fmt.Println("yes")
+		//fmt.Println(invalid_err.Error())
+		return response.SendResponse(c, 107, "invalid register info format", invalid_err.Error())
 	}
 	// validate
 
