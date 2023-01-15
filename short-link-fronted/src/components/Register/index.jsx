@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import "./index.css";
+import axios from "axios";
 
 export default class Register extends Component {
   state = {
     name: "",
     email: "",
     pwd: "",
-    passwordConfirm: "",
+    // passwordConfirm: "",
     secQ: "",
     secA: "",
   };
 
   fpost = async () => {
+    console.log(this.state);
     let res = await fetch("http://localhost:1926/api/user/register", {
       method: "post",
       header: {
@@ -33,9 +35,19 @@ export default class Register extends Component {
     }
   };
 
+  fpost2 = () => {
+    axios({
+      method: "post",
+      url: "http://localhost:1926/api/user/register",
+      data: this.state,
+    }).then((res) => {
+      console.log(res);
+    });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost();
+    this.fpost2();
   };
 
   saveFormData = (dataType) => {
@@ -88,7 +100,7 @@ export default class Register extends Component {
               onChange={this.saveFormData("pwd")}
             />
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label htmlFor="passwordConfirm" className="form-label">
               确认密码
             </label>
@@ -100,7 +112,7 @@ export default class Register extends Component {
               required
               onChange={this.saveFormData("passwordConfirm")}
             />
-          </div>
+          </div> */}
           <div className="mb-3">
             <label htmlFor="passwordConfirm" className="form-label">
               密保问题
