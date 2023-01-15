@@ -2,6 +2,7 @@ package controller
 
 // user crud
 import (
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
@@ -57,10 +58,11 @@ func Users_register(c echo.Context) error {
 	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
-
+	fmt.Println((*data).Email)
 	if invalid_err != nil {
 		//fmt.Println("yes")
 		//fmt.Println(invalid_err.Error())
+
 		return response.SendResponse(c, 107, "invalid register info format", invalid_err.Error())
 	}
 	// validate
