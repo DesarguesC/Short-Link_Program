@@ -47,11 +47,10 @@ func CreateUrl(c echo.Context) (err error) {
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "dbAdd err")
 	}
-	fmt.Println(5)
 	if !IsDefined {
 		GenerateShortUrl(url)
 		logrus.Info("生成链接")
-
+		logrus.Info(url.Short)
 		err = model.DB.Debug().Updates(url).Error
 		if err != nil {
 			logrus.Error(err)

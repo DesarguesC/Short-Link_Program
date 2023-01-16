@@ -7,9 +7,9 @@ import (
 
 // 62 进制转换 0-9 A-Z a-z
 // 6位字符串
-func GenerateShortUrl(url *model.Url) { //生成短链接算法
+func GenerateShortUrl(url *model.Url) { //生成短链接hash算法
 	Id := url.Id
-	url.Short = Encode(Id)
+	url.Short = "visit/" + Encode(Id)
 }
 func Encode(UrlId int) string { // id ->string(62)
 	var base int = 62

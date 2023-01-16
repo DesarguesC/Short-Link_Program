@@ -7,13 +7,12 @@ import (
 	"go-svc-tpl/app/response"
 	"go-svc-tpl/databases"
 	"gorm.io/gorm"
-	"net/http"
 	"time"
 )
 
 func RedirectMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		short := c.Param("hash")
+		short := "visit/" + c.Param("hash")
 		url, err := databases.QueryUrl(short)
 		if err != nil {
 			if err == gorm.ErrRecordNotFound {
@@ -35,7 +34,7 @@ func RedirectMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 		// 重定向
 		// 301 会缓存 直接跳转
-		err = c.Redirect(http.StatusTemporaryRedirect, "/"+target)
+		err = c.Redirect(302, target)
 		if err != nil {
 			logrus.Error(err)
 			return response.SendResponse(c, 400, "redict error")
