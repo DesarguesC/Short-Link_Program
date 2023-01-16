@@ -32,12 +32,12 @@ func Users_register(c echo.Context) error {
 		logrus.Error("Bind Failed")
 		return response.SendResponse(c, 400, "Bind Failed")
 	}
+
+	fmt.Println((*data).Name)
 	current_time := time.Now()
 	new_user := new(model.Users)
-	//(*new_user).Name = (*data).Name
-	//new_user := model.Users{1, name, email, pwd, secQ, secA, current_time}
 
-	err := model.DB.Find(&new_user, "name = ?", (*data).Name).Error
+	err := model.DB.Debug().Find(&new_user).Error
 	if err != nil {
 		status = "nil"
 		return response.SendResponse(c, 100, "Registration Failed: This name has been used", status)
@@ -58,7 +58,8 @@ func Users_register(c echo.Context) error {
 	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
-	fmt.Println((*data).Email)
+	//fmt.Println("yes")
+	//fmt.Println((*data).Name)
 	if invalid_err != nil {
 		//fmt.Println("yes")
 		//fmt.Println(invalid_err.Error())

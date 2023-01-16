@@ -12,28 +12,28 @@ type CustomValidator struct {
 
 // 注册时的输入字符验证
 type RegisterStruct struct {
-	Name string `form:"name" json:"name" query:"name" validate:"excludesall=!@#$%^&*()_-{},ne=nil"`
+	Name string `form:"name" json:"name" query:"name" validate:"required,excludesall=!@#$%^&*()_-{},ne=nil"`
 	//ID     int    `json:"ID" validate:"required,min=0,max=10"`
-	Email string `form:"email" json:"email" query:"email" validate:"endswith=@[a-z]+.com"`
-	Pwd   string `form:"pwd" json:"pwd" query:"pwd" validate:"excludesall=!@#$%^&*()_-{}"`
-	SecQ  string `form:"secQ" json:"secQ" query:"secQ" validate:"excludesall=!@#$%^&*()_-{}"`
-	SecA  string `form:"secA" json:"secA" query:"secA" validate:"excludesall=!@#$%^&*()_-{}"`
+	Email string `form:"email" json:"email" query:"email" validate:"required,endswith=@[a-z]+.com"`
+	Pwd   string `form:"pwd" json:"pwd" query:"pwd" validate:"required,excludesall=!@#$%^&*()_-{}"`
+	SecQ  string `form:"secQ" json:"secQ" query:"secQ" validate:"required,excludesall=!@#$%^&*()_-{}"`
+	SecA  string `form:"secA" json:"secA" query:"secA" validate:"required,excludesall=!@#$%^&*()_-{}"`
 }
 
 //
 
 // 登录时的输入字符验证
 type LoginStruct struct {
-	Email string `form:"email" json:"email" query:"email" validate:"contains=@[a-z]+.com"`
+	Email string `form:"email" json:"email" query:"email" validate:"required,endswith=@[a-z]+.com"`
 	//Name  string `json:"name" validate:"required,excludesall=!@#$%^&*()_-{},ne=nil"`
-	Pwd string `form:"pwd" json:"pwd" query:"pwd" validate:"excludesall=!@#$%^&*()_-{}"`
+	Pwd string `form:"pwd" json:"pwd" query:"pwd" validate:"required,excludesall=!@#$%^&*()_-{}"`
 }
 
 type SecurityStruct struct {
-	Name    string `form:"name" json:"name" query:"name" validate:"excludesall=!@#$%^&*()_-{},ne=nil"`
-	Email   string `form:"email" json:"email" query:"email" validate:"contains=@[a-z]+.com"`
-	Pwd_new string `form:"newpwd" json:"newpwd" query:"newpwd" validate:"excludesall=!@#$%^&*()_-{}"`
-	SecA    string `form:"secA" json:"secA" query:"secA" validate:"excludesall=!@#$%^&*()_-{}"`
+	Name    string `form:"name" json:"name" query:"name" validate:"required,excludesall=!@#$%^&*()_-{},ne=nil"`
+	Email   string `form:"email" json:"email" query:"email" validate:"required,endswith=@[a-z]+.com"`
+	Pwd_new string `form:"newpwd" json:"newpwd" query:"newpwd" validate:"required,excludesall=!@#$%^&*()_-{}"`
+	SecA    string `form:"secA" json:"secA" query:"secA" validate:"required,excludesall=!@#$%^&*()_-{}"`
 }
 
 //// 在系统认为的已登录状态下的验证（验证state）
