@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import classnames from "classnames";
+import swal from "sweetalert";
 // import axios from "axios";
 
 export default class Login extends Component {
@@ -9,26 +10,24 @@ export default class Login extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("http://localhost:1926/api/user/login", {
+    await fetch("http://localhost:1926/api/user/login", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((response) => {
-      console.log("响应", response);
+    }).then((res) => {
+      console.log("响应", res);
+      if (res.status === 102) {
+        swal("邮箱或密码错误");
+      } else if (res.status === 103) {
+        swal("登录成功");
+      } else if (res.status === 105) {
+        swal("登录信息无效");
+      } else if (res.status === 200) {
+        swal("登录成功！");
+      }
     });
-
-    let json = await res.json();
-    console.log(json);
-
-    if (res.status === 102) {
-      alert("邮箱或密码错误");
-    } else if (res.status === 103) {
-      alert("登录成功");
-    } else if (res.status === 105) {
-      alert("登录信息无效");
-    }
   };
 
   // fpost2 = () => {
@@ -43,8 +42,8 @@ export default class Login extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
-    alert(`你输入的邮箱是：${email}，你输入的密码是：${password}`);
+    // const { email, password } = this.state;
+    // alert(`你输入的邮箱是：${email}，你输入的密码是：${password}`);
     this.fpost();
   };
 

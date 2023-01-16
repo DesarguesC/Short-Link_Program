@@ -1,53 +1,51 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import "./index.css";
-import axios from "axios";
+// import axios from "axios";
+import swal from "sweetalert";
 
 export default class Register extends Component {
   state = {
     name: "",
     email: "",
     pwd: "",
-    // passwordConfirm: "",
     secQ: "",
     secA: "",
   };
 
   fpost = async () => {
     console.log(this.state);
-    let res = await fetch("http://localhost:1926/api/user/register", {
+    await fetch("http://localhost:1926/api/user/register", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    });
-
-    let json = await res.json();
-    console.log(json);
-
-    if (res.status === 100) {
-      alert("用户名已被使用");
-    } else if (res.status === 101) {
-      alert("用户创建成功");
-    } else if (res.status === 107) {
-      alert("用户创建失败");
-    }
-  };
-
-  fpost2 = () => {
-    axios({
-      method: "post",
-      url: "http://localhost:1926/api/user/register",
-      data: this.state,
     }).then((res) => {
       console.log(res);
+      if (res.status === 100) {
+        swal("用户名已被使用");
+      } else if (res.status === 101) {
+        swal("用户创建成功");
+      } else if (res.status === 107) {
+        swal("用户创建失败");
+      }
     });
   };
+
+  // fpost2 = () => {
+  //   axios({
+  //     method: "post",
+  //     url: "http://localhost:1926/api/user/register",
+  //     data: this.state,
+  //   }).then((res) => {
+  //     console.log(res);
+  //   });
+  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost2();
+    this.fpost();
   };
 
   saveFormData = (dataType) => {

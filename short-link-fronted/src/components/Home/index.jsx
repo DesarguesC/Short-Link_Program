@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
-import axios from "axios";
+// import axios from "axios";
+// import swal from "sweetalert";
 
 export default class Home extends Component {
   state = {
@@ -13,27 +14,30 @@ export default class Home extends Component {
 
   fpost = async () => {
     console.log(this.state);
-    let res = await fetch("http://localhost:1926/api/url/create", {
+    await fetch("http://localhost:1926/api/url/create", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    });
-
-    let json = await res.json();
-    console.log(json);
-  };
-
-  fpost2 = () => {
-    axios({
-      method: "post",
-      url: "http://localhost:1926/api/url/create",
-      data: this.state,
     }).then((res) => {
       console.log(res);
     });
   };
+
+  // fpost2 = () => {
+  //   axios({
+  //     method: "post",
+  //     url: "http://localhost:1926/api/url/create",
+  //     data: this.state,
+  //   }).then((res) => {
+  //     console.log(res);
+  //     if (res.data.code === 200) {
+  //       swal(`原来的网址是：${this.state.origin}
+  //       生成的短链接是：http://localhost:1926/visit/${res.data.data[0].short}`);
+  //     }
+  //   });
+  // };
 
   handleSubmit = (e) => {
     e.preventDefault();

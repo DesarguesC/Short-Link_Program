@@ -1,54 +1,88 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+// import swal from "sweetalert";
 
 export default class Pause extends Component {
   state = {
-    short: '',
-  }
+    short: "",
+  };
 
   fpost = async () => {
-    let res = await fetch('http://localhost:1926/api/url/pause', {
-      method: 'post',
-      header: {
-        'Content-Type': 'application/json'
+    await fetch("http://localhost:1926/api/url/pause", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.state)
-    })
+      body: JSON.stringify(this.state),
+    }).then((res) => {
+      console.log(res);
+    });
+  };
 
-    let json = await res.json()
-    console.log(json)
-  }
-
-  handleSubmit = e => {
-    e.preventDefault()
-    this.fpost()
-  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.fpost();
+  };
 
   saveFormData = (dataType) => {
     return (event) => {
-      this.setState({ [dataType]: event.target.value })
-    }
-  }
+      this.setState({ [dataType]: event.target.value });
+    };
+  };
 
   render() {
     return (
       <div>
         <form action="">
-          <strong htmlFor="basic-url" className="form-label">暂停短网址</strong>
+          <strong htmlFor="basic-url" className="form-label">
+            暂停短网址
+          </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
-            <span className="input-group-text" id="basic-addon3">https://xxx.com/</span>
-            <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
-              placeholder='补全短网址' name="short" onChange={this.saveFormData('short')} />
-            <button type="button" className="btn btn-outline-dark" onClick={this.handleSubmit}>暂停</button>
+            <span className="input-group-text" id="basic-addon3">
+              https://xxx.com/
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              id="basic-url"
+              aria-describedby="basic-addon3"
+              placeholder="补全短网址"
+              name="short"
+              onChange={this.saveFormData("short")}
+            />
+            <button
+              type="button"
+              className="btn btn-outline-dark"
+              onClick={this.handleSubmit}
+            >
+              暂停
+            </button>
           </div>
-          <strong htmlFor="basic-url" className="form-label">重启短网址</strong>
+          <strong htmlFor="basic-url" className="form-label">
+            重启短网址
+          </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
-            <span className="input-group-text" id="basic-addon3">https://xxx.com/</span>
-            <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3"
-              placeholder='补全短网址' name="short" onChange={this.saveFormData('short')} />
-            <button type="button" className="btn btn-outline-dark" onClick={this.handleSubmit}>重启</button>
+            <span className="input-group-text" id="basic-addon3">
+              https://xxx.com/
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              id="basic-url"
+              aria-describedby="basic-addon3"
+              placeholder="补全短网址"
+              name="short"
+              onChange={this.saveFormData("short")}
+            />
+            <button
+              type="button"
+              className="btn btn-outline-dark"
+              onClick={this.handleSubmit}
+            >
+              重启
+            </button>
           </div>
         </form>
       </div>
-    )
+    );
   }
 }

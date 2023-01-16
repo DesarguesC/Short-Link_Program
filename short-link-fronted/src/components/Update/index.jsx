@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+// import swal from "sweetalert";
 
 export default class Update extends Component {
   state = {
@@ -9,16 +10,15 @@ export default class Update extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("http://localhost:1926/api/url/update", {
+    await fetch("http://localhost:1926/api/url/update", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
+    }).then((res) => {
+      console.log(res);
     });
-
-    let json = await res.json();
-    console.log(json);
   };
 
   handleSubmit = (e) => {
