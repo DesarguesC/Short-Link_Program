@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./index.css";
 // import axios from "axios";
-// import swal from "sweetalert";
+import swal from "sweetalert";
 
 export default class Home extends Component {
   state = {
@@ -20,9 +20,18 @@ export default class Home extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`原来的网址是：${this.state.origin}
+              生成的短链接是：http://localhost:1926/${data.data[0].short}`);
+        } else if (data.code === 400) {
+          swal(`原网址已创建过短链接`);
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   // fpost2 = () => {
@@ -41,7 +50,7 @@ export default class Home extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost2();
+    this.fpost();
   };
 
   saveFormData = (dataType) => {
@@ -80,7 +89,7 @@ export default class Home extends Component {
         </strong>
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon3">
-            https://xxx.com/
+            http://localhost:1926/visit/
           </span>
           <input
             type="text"

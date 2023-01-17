@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import swal from "sweetalert";
+import swal from "sweetalert";
 
 export default class Delete extends Component {
   state = {
@@ -13,9 +13,15 @@ export default class Delete extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`还原短链接成功！`);
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
@@ -38,7 +44,7 @@ export default class Delete extends Component {
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"
@@ -53,63 +59,12 @@ export default class Delete extends Component {
             <button
               type="button"
               className="btn btn-outline-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
               onClick={this.handleSubmit}
             >
               还原
             </button>
           </div>
         </form>
-
-        {/* <button
-          type="button"
-          className="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Launch demo modal
-        </button> */}
-
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h1 className="modal-title fs-5" id="exampleModalLabel">
-                  Modal title
-                </h1>
-                {/* <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button> */}
-              </div>
-              <div className="modal-body">
-                {/* 已还原 https://xxx.com/{this.state.short} 这个短网址 */}
-                {/* {this.json.code} */}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  关闭
-                </button>
-                {/* <button type="button" className="btn btn-primary">
-                  确认
-                </button> */}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     );
   }

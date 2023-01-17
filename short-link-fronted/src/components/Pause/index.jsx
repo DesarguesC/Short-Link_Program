@@ -1,26 +1,34 @@
 import React, { Component } from "react";
-// import swal from "sweetalert";
+import swal from "sweetalert";
 
 export default class Pause extends Component {
   state = {
     short: "",
   };
 
-  fpost = async () => {
+  fpost = async (e) => {
     await fetch("http://localhost:1926/api/url/pause", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200 && e.target.name === "pause") {
+          swal(`暂停短链接成功！`);
+        } else if (data.code === 200 && e.target.name === "restart") {
+          swal(`重启短链接成功！`);
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost();
+    this.fpost(e);
   };
 
   saveFormData = (dataType) => {
@@ -38,7 +46,7 @@ export default class Pause extends Component {
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"
@@ -52,6 +60,7 @@ export default class Pause extends Component {
             <button
               type="button"
               className="btn btn-outline-dark"
+              name="pause"
               onClick={this.handleSubmit}
             >
               暂停
@@ -62,7 +71,7 @@ export default class Pause extends Component {
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"
@@ -76,6 +85,7 @@ export default class Pause extends Component {
             <button
               type="button"
               className="btn btn-outline-dark"
+              name="restart"
               onClick={this.handleSubmit}
             >
               重启

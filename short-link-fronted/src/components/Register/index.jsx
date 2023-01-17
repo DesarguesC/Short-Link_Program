@@ -14,23 +14,26 @@ export default class Register extends Component {
   };
 
   fpost = async () => {
-    console.log(this.state);
+    // console.log(this.state);
     await fetch("http://localhost:1926/api/user/register", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      console.log(res);
-      if (res.status === 100) {
-        swal("用户名已被使用");
-      } else if (res.status === 101) {
-        swal("用户创建成功");
-      } else if (res.status === 107) {
-        swal("用户创建失败");
-      }
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`创建用户成功！`);
+        } else if (data.code === 107) {
+          swal("用户创建失败");
+        } else if (data.code === 100) {
+          swal("用户名已被使用");
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   // fpost2 = () => {

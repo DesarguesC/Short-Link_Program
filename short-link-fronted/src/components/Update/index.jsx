@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import swal from "sweetalert";
+import swal from "sweetalert";
 
 export default class Update extends Component {
   state = {
@@ -16,9 +16,15 @@ export default class Update extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`更新短链接成功！`);
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
@@ -41,7 +47,7 @@ export default class Update extends Component {
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"
