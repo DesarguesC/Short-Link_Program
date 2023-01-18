@@ -20,6 +20,7 @@ export default class Delete extends Component {
         if (data.code === 200) {
           swal(`还原短链接成功！`);
         }
+        this.refs.form.reset();
       })
       .catch((error) => console.log("error is", error));
   };
@@ -38,7 +39,7 @@ export default class Delete extends Component {
   render() {
     return (
       <div>
-        <form action="">
+        <form ref="form">
           <strong htmlFor="basic-url" className="form-label">
             还原短网址
           </strong>

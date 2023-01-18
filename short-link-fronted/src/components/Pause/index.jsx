@@ -19,8 +19,10 @@ export default class Pause extends Component {
         console.log("data is", data);
         if (data.code === 200 && e.target.name === "pause") {
           swal(`暂停短链接成功！`);
+          this.refs.form.reset();
         } else if (data.code === 200 && e.target.name === "restart") {
           swal(`重启短链接成功！`);
+          this.refs.form.reset();
         }
       })
       .catch((error) => console.log("error is", error));
@@ -40,7 +42,7 @@ export default class Pause extends Component {
   render() {
     return (
       <div>
-        <form action="">
+        <form ref="form">
           <strong htmlFor="basic-url" className="form-label">
             暂停短网址
           </strong>

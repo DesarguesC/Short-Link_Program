@@ -22,6 +22,7 @@ export default class Update extends Component {
         console.log("data is", data);
         if (data.code === 200) {
           swal(`更新短链接成功！`);
+          this.refs.form.reset();
         }
       })
       .catch((error) => console.log("error is", error));
@@ -41,7 +42,7 @@ export default class Update extends Component {
   render() {
     return (
       <div>
-        <form action="">
+        <form ref="form">
           <strong htmlFor="basic-url" className="form-label">
             更新短网址
           </strong>

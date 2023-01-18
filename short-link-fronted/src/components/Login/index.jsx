@@ -24,6 +24,7 @@ export default class Login extends Component {
           swal(`邮箱或密码错误`);
         } else if (data.code === 103) {
           swal(`登录成功！`);
+          this.refs.form.reset();
         } else if (data.code === 105) {
           swal(`登陆失败`);
         }
@@ -56,7 +57,7 @@ export default class Login extends Component {
     return (
       <div>
         <div className="content">
-          <form onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit} ref="form">
             <div className="mb-3">
               <label htmlFor="email" className="form-label">
                 邮箱

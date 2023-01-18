@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./index.css";
-// import axios from "axios";
 import swal from "sweetalert";
 
 export default class Home extends Component {
@@ -8,8 +7,8 @@ export default class Home extends Component {
     origin: "",
     short: "",
     comment: "",
-    starTime: "2022-01-01T08:00:00+08:00",
-    expireTime: "2023-11-17T08:00:00+08:00",
+    starTime: "",
+    expireTime: "",
   };
 
   fpost = async () => {
@@ -27,26 +26,13 @@ export default class Home extends Component {
         if (data.code === 200) {
           swal(`原来的网址是：${this.state.origin}
               生成的短链接是：http://localhost:1926/${data.data[0].short}`);
+          this.refs.form.reset();
         } else if (data.code === 400) {
-          swal(`原网址已创建过短链接`);
+          swal(`创建短链接失败`);
         }
       })
       .catch((error) => console.log("error is", error));
   };
-
-  // fpost2 = () => {
-  //   axios({
-  //     method: "post",
-  //     url: "http://localhost:1926/api/url/create",
-  //     data: this.state,
-  //   }).then((res) => {
-  //     console.log(res);
-  //     if (res.data.code === 200) {
-  //       swal(`原来的网址是：${this.state.origin}
-  //       生成的短链接是：http://localhost:1926/visit/${res.data.data[0].short}`);
-  //     }
-  //   });
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -59,9 +45,15 @@ export default class Home extends Component {
     };
   };
 
+  saveTimeData = (dataType) => {
+    return (event) => {
+      this.setState({ [dataType]: event.target.value + ":00+08:00" });
+    };
+  };
+
   render() {
     return (
-      <form action="">
+      <form ref="form">
         <strong htmlFor="basic-url" className="form-label">
           原始网址
         </strong>
@@ -125,8 +117,8 @@ export default class Home extends Component {
             id="basic-url"
             aria-describedby="basic-addon3"
             placeholder="留空表示不限制"
-            name="starttime"
-            onChange={this.saveFormData("starttime")}
+            name="startTime"
+            onChange={this.saveTimeData("startTime")}
           />
         </div>
         <strong htmlFor="basic-url" className="form-label">
@@ -140,7 +132,7 @@ export default class Home extends Component {
             aria-describedby="basic-addon3"
             placeholder="留空表示不限制"
             name="expireTime"
-            onChange={this.saveFormData("expireTime")}
+            onChange={this.saveTimeData("expireTime")}
           />
         </div>
       </form>
