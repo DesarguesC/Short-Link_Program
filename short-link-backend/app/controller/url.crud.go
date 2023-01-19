@@ -100,7 +100,7 @@ func DelUrl(c echo.Context) (err error) { //url details
 			return response.SendResponse(c, 400, "Bind Fail")
 		}
 	}
-	err = databases.DelUrl(data.Short)
+	err = databases.DelUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Del failed")
 	}
@@ -112,7 +112,7 @@ func PauseUrl(c echo.Context) error { //
 	if err := c.Bind(data); err != nil {
 		logrus.Error("Bind Failed")
 	}
-	err, resp := databases.PauseUrl(data.Short)
+	err, resp := databases.PauseUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Pause failed", resp)
 	}
@@ -124,7 +124,7 @@ func ContinueUrl(c echo.Context) error {
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "Bind error") //
 	}
-	err, resp := databases.ContinueUrl(data.Short)
+	err, resp := databases.ContinueUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Continue failed", resp)
 	}
