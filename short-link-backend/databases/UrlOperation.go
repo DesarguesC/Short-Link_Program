@@ -42,6 +42,7 @@ func DelUrl(short string) error {
 
 // Post
 // updates 无法更新0值（flase） qwq 查半天
+
 func PauseUrl(short string) (error, *model.Url) {
 	tmp, err := QueryUrl(short)
 	if err != nil {
