@@ -27,7 +27,7 @@ func CreateUrl(c echo.Context) (err error) {
 	fmt.Println(2)
 	if data.Short != "" && data.Short[0] != ' ' {
 		IsDefined = true
-		url.Short = "visit" + data.Short // 自定义
+		url.Short = "visit/" + data.Short // 自定义
 	} else if data.Short != "" && data.Short[0] == ' ' {
 		return response.SendResponse(c, 400, "开头不能有空格")
 	}
