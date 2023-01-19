@@ -63,7 +63,7 @@ func QueryUrl(c echo.Context) (err error) { //url details
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "Bind Fail")
 	}
-	resp, err := databases.QueryUrl((data).Short)
+	resp, err := databases.QueryUrl("visit/" + (data).Short)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return response.SendResponse(c, 400, "not found")
@@ -111,6 +111,8 @@ func PauseUrl(c echo.Context) error { //
 	data := new(model.DelInput)
 	if err := c.Bind(data); err != nil {
 		logrus.Error("Bind Failed")
+		return response.SendResponse(c, 400, "Bind error") //
+
 	}
 	err, resp := databases.PauseUrl("visit/" + data.Short)
 	if err != nil {
