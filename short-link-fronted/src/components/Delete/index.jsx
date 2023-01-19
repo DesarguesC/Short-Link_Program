@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import swal from "sweetalert";
 
 export default class Delete extends Component {
   state = {
@@ -6,16 +7,22 @@ export default class Delete extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("http://localhost:1926/api/url/delete", {
+    await fetch("http://localhost:1926/api/url/delete", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    });
-
-    let json = await res.json();
-    console.log(json);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`还原短链接成功！`);
+        }
+        this.refs.form.reset();
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
@@ -32,13 +39,13 @@ export default class Delete extends Component {
   render() {
     return (
       <div>
-        <form action="">
+        <form ref="form">
           <strong htmlFor="basic-url" className="form-label">
             还原短网址
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"

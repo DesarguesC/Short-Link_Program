@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import swal from "sweetalert";
 
 export default class Update extends Component {
   state = {
@@ -9,16 +10,22 @@ export default class Update extends Component {
   };
 
   fpost = async () => {
-    let res = await fetch("http://localhost:1926/api/url/update", {
+    await fetch("http://localhost:1926/api/url/update", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    });
-
-    let json = await res.json();
-    console.log(json);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`更新短链接成功！`);
+          this.refs.form.reset();
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
@@ -35,13 +42,13 @@ export default class Update extends Component {
   render() {
     return (
       <div>
-        <form action="">
+        <form ref="form">
           <strong htmlFor="basic-url" className="form-label">
             更新短网址
           </strong>
           <div className="input-group mb-3" style={{ margin: "10px 0" }}>
             <span className="input-group-text" id="basic-addon3">
-              https://xxx.com/
+              http://localhost:1926/visit/
             </span>
             <input
               type="text"
@@ -83,7 +90,7 @@ export default class Update extends Component {
             />
           </div>
           <strong htmlFor="basic-url" className="form-label">
-            有效期自（可选）
+            有效期至（可选）
           </strong>
           <div className="input-group mb-3">
             <input

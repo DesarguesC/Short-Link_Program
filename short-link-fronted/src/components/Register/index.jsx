@@ -1,53 +1,43 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import "./index.css";
-import axios from "axios";
+import swal from "sweetalert";
 
 export default class Register extends Component {
   state = {
     name: "",
     email: "",
     pwd: "",
-    // passwordConfirm: "",
     secQ: "",
     secA: "",
   };
 
   fpost = async () => {
-    console.log(this.state);
-    let res = await fetch("http://localhost:1926/api/user/register", {
+    await fetch("http://localhost:1926/api/user/register", {
       method: "post",
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(this.state),
-    });
-
-    let json = await res.json();
-    console.log(json);
-
-    if (res.status === 100) {
-      alert("用户名已被使用");
-    } else if (res.status === 101) {
-      alert("用户创建成功");
-    } else if (res.status === 107) {
-      alert("用户创建失败");
-    }
-  };
-
-  fpost2 = () => {
-    axios({
-      method: "post",
-      url: "http://localhost:1926/api/user/register",
-      data: this.state,
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200) {
+          swal(`创建用户成功！`);
+          this.refs.form.reset();
+        } else if (data.code === 107) {
+          swal("用户创建失败");
+        } else if (data.code === 100) {
+          swal("用户名已被使用");
+        }
+      })
+      .catch((error) => console.log("error is", error));
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.fpost2();
+    this.fpost();
   };
 
   saveFormData = (dataType) => {
@@ -59,7 +49,7 @@ export default class Register extends Component {
   render() {
     return (
       <div className="content">
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} ref="form">
           <div className="mb-3">
             <label htmlFor="userName" className="form-label">
               用户名
