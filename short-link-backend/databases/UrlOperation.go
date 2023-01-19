@@ -37,6 +37,7 @@ func DelUrl(short string) error {
 	if err != nil {
 		logrus.Error(err)
 	}
+	fmt.Println(tmp)
 	return err
 }
 

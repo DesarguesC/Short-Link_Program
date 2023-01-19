@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 	"go-svc-tpl/app/response"
@@ -24,7 +23,6 @@ func CreateUrl(c echo.Context) (err error) {
 	url.Comment = data.Comment
 	url.ExpireTime = data.ExpireTime
 	url.StartTime = data.StartTime
-	fmt.Println(2)
 	if data.Short != "" && data.Short[0] != ' ' {
 		IsDefined = true
 		url.Short = "visit/" + data.Short // 自定义
