@@ -34,3 +34,6 @@ type ProfileOutput struct {
 	Time       time.Time `gorm:"type:datetime;autoCreateTime" json:"time"`
 	AccessTime time.Time `gorm:"type:datetime;autoCreateTime" json:"accessTime"`
 }
+type ShowUrlsOutput struct {
+	Urls []Url `json:"urls" `
+}

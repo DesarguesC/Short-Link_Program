@@ -27,6 +27,7 @@ func addRoutes() {
 	api.POST("/url/update", controller.UpdateUrl)
 	api.POST("/url/delete", controller.DelUrl)
 	api.POST("/url/pause", controller.PauseUrl)
+	api.POST("/url/get", controller.ShowUrls)
 	api.POST("/url/continue", controller.ContinueUrl)
 	api.POST("/user/register", controller.Users_register, midware.CheckRegister)
 	api.POST("/user/login", controller.User_login, midware.CheckLogin)
