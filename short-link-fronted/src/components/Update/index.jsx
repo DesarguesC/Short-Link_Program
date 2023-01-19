@@ -90,7 +90,7 @@ export default class Update extends Component {
             />
           </div>
           <strong htmlFor="basic-url" className="form-label">
-            有效期自（可选）
+            有效期至（可选）
           </strong>
           <div className="input-group mb-3">
             <input

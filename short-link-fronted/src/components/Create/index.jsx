@@ -7,8 +7,10 @@ export default class Home extends Component {
     origin: "",
     short: "",
     comment: "",
-    starTime: "",
-    expireTime: "",
+    starTime: "2022-01-01T08:00:00+08:00",
+    expireTime: "2023-11-17T08:00:00+08:00",
+    // starTime: "",
+    // expireTime: "",
   };
 
   fpost = async () => {
@@ -122,7 +124,7 @@ export default class Home extends Component {
           />
         </div>
         <strong htmlFor="basic-url" className="form-label">
-          有效期自（可选）
+          有效期至（可选）
         </strong>
         <div className="input-group mb-3">
           <input
