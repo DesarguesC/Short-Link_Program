@@ -58,12 +58,8 @@ func Users_register(c echo.Context) error {
 	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
-	//fmt.Println("yes")
-	//fmt.Println((*data).Name)
-	if invalid_err != nil {
-		//fmt.Println("yes")
-		//fmt.Println(invalid_err.Error())
 
+	if invalid_err != nil {
 		return response.SendResponse(c, 107, "invalid register info format", invalid_err.Error())
 	}
 	// validate
@@ -87,7 +83,7 @@ func User_login(c echo.Context) error {
 		logrus.Error("Bind Failed")
 		return response.SendResponse(c, 400, "Bind Failed")
 	}
-	return response.SendResponse(c, -100, "test", (*data).Email)
+	//return response.SendResponse(c, -100, "test", (*data).Email)
 
 	a_User := new(model.Users)
 	(*a_User).Email = (*data).Email
