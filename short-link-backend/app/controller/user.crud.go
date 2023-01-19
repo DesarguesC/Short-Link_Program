@@ -55,6 +55,9 @@ func Users_register(c echo.Context) error {
 	secQ := (*data).SecQ
 	secA := (*data).SecA
 
+	fmt.Println(name)
+	fmt.Println("eee")
+
 	one := midware.RegisterStruct{name, email, pwd, secQ, secA}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
