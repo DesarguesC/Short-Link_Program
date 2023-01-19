@@ -32,12 +32,12 @@ func CreateUrl(c echo.Context) (err error) {
 		return response.SendResponse(c, 400, "开头不能有空格")
 	}
 	url.Enable = "able"
-	err = model.DB.Debug().Where("origin = ?", (url).Origin).First(url).Error
+	err = model.DB.Debug().Where("binary origin = ?", (url).Origin).First(url).Error
 	if err != gorm.ErrRecordNotFound {
 		return response.SendResponse(c, 400, "have created same origin")
 	}
 	if IsDefined {
-		err = model.DB.Debug().Where("short = ?", (url).Short).First(url).Error
+		err = model.DB.Debug().Where("binary short = ?", (url).Short).First(url).Error
 		if err != gorm.ErrRecordNotFound {
 			return response.SendResponse(c, 400, "have created same short")
 		}
@@ -49,7 +49,6 @@ func CreateUrl(c echo.Context) (err error) {
 	}
 	if !IsDefined {
 		GenerateShortUrl(url)
-		logrus.Info("生成链接")
 		logrus.Info(url.Short)
 		err = model.DB.Debug().Updates(url).Error
 		if err != nil {
@@ -66,7 +65,7 @@ func QueryUrl(c echo.Context) (err error) { //url details
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "Bind Fail")
 	}
-	resp, err := databases.QueryUrl((*data).Short)
+	resp, err := databases.QueryUrl((data).Short)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return response.SendResponse(c, 400, "not found")
