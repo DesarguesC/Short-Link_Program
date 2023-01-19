@@ -23,7 +23,7 @@ export default class Register extends Component {
       .then((response) => response.json())
       .then((data) => {
         console.log("data is", data);
-        if (data.code === 200) {
+        if (data.code === 101) {
           swal(`创建用户成功！`);
           this.refs.form.reset();
         } else if (data.code === 107) {
