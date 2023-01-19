@@ -6,7 +6,7 @@ export default class Pause extends Component {
     short: "",
   };
 
-  fpost = async (e) => {
+  fpost1 = async (e) => {
     await fetch("http://localhost:1926/api/url/pause", {
       method: "post",
       headers: {
@@ -28,9 +28,36 @@ export default class Pause extends Component {
       .catch((error) => console.log("error is", error));
   };
 
-  handleSubmit = (e) => {
+  fpost2 = async (e) => {
+    await fetch("http://localhost:1926/api/url/continue", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data is", data);
+        if (data.code === 200 && e.target.name === "pause") {
+          swal(`暂停短链接成功！`);
+          this.refs.form.reset();
+        } else if (data.code === 200 && e.target.name === "restart") {
+          swal(`重启短链接成功！`);
+          this.refs.form.reset();
+        }
+      })
+      .catch((error) => console.log("error is", error));
+  };
+
+  handleSubmit1 = (e) => {
     e.preventDefault();
-    this.fpost(e);
+    this.fpost1(e);
+  };
+
+  handleSubmit2 = (e) => {
+    e.preventDefault();
+    this.fpost2(e);
   };
 
   saveFormData = (dataType) => {
@@ -63,7 +90,7 @@ export default class Pause extends Component {
               type="button"
               className="btn btn-outline-dark"
               name="pause"
-              onClick={this.handleSubmit}
+              onClick={this.handleSubmit1}
             >
               暂停
             </button>
@@ -88,7 +115,7 @@ export default class Pause extends Component {
               type="button"
               className="btn btn-outline-dark"
               name="restart"
-              onClick={this.handleSubmit}
+              onClick={this.handleSubmit2}
             >
               重启
             </button>
