@@ -7,11 +7,13 @@ import (
 	"go-svc-tpl/model"
 )
 
+// 由于mysql查找不区分大小写，查找字段前加上 binary
+
 func QueryUrl(short string) (*model.Url, error) {
 	tmp := new(model.Url)
 	tmp.Short = short
 	fmt.Println(short)
-	err := model.DB.Debug().Where("short = ?", short).First(&tmp).Error
+	err := model.DB.Debug().Where("binary short = ?", short).First(&tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -22,17 +24,16 @@ func QueryUrl(short string) (*model.Url, error) {
 func UpdateUrl(url *model.Url) error { //
 	var tmp model.Url
 	tmp = *url
-	err := model.DB.Debug().Where("origin=?", tmp.Origin).Updates(tmp).Error
+	err := model.DB.Debug().Where("binary origin=?", tmp.Origin).Updates(tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}
 	return err
 }
-
 func DelUrl(short string) error {
 	tmp := new(model.Url)
 	tmp.Short = short
-	err := model.DB.Debug().Where("short = ?", short).Delete(tmp).Error
+	err := model.DB.Debug().Where("binary short = ?", short).Delete(tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -47,7 +48,7 @@ func PauseUrl(short string) (error, *model.Url) {
 		logrus.Error(err)
 	}
 	tmp.Enable = "unable"
-	err = model.DB.Debug().Where("short = ?", tmp.Short).Updates(&tmp).Error
+	err = model.DB.Debug().Where("binary short = ?", tmp.Short).Updates(&tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}
@@ -59,7 +60,7 @@ func ContinueUrl(short string) (error, *model.Url) {
 		logrus.Error(err)
 	}
 	tmp.Enable = "able"
-	err = model.DB.Debug().Where("short = ?", short).Updates(&tmp).Error
+	err = model.DB.Debug().Where("binary short = ?", short).Updates(&tmp).Error
 	if err != nil {
 		logrus.Error(err)
 	}
