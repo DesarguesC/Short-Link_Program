@@ -38,9 +38,10 @@ func Users_register(c echo.Context) error {
 	new_user := new(model.Users)
 
 	err := model.DB.Debug().Find(&new_user).Error
+
 	if err != nil {
 		status = "nil"
-		return response.SendResponse(c, 100, "Registration Failed: This name has been used", status)
+		return response.SendResponse(c, 100, "Registration Failed: This name has been used", err.Error())
 	}
 	(*new_user).Id = (*data).Id
 	(*new_user).Email = (*data).Email
