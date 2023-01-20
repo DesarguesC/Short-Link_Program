@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 	"go-svc-tpl/app/response"
@@ -24,10 +23,9 @@ func CreateUrl(c echo.Context) (err error) {
 	url.Comment = data.Comment
 	url.ExpireTime = data.ExpireTime
 	url.StartTime = data.StartTime
-	fmt.Println(2)
 	if data.Short != "" && data.Short[0] != ' ' {
 		IsDefined = true
-		url.Short = data.Short // 自定义
+		url.Short = "visit/" + data.Short // 自定义
 	} else if data.Short != "" && data.Short[0] == ' ' {
 		return response.SendResponse(c, 400, "开头不能有空格")
 	}
@@ -65,7 +63,7 @@ func QueryUrl(c echo.Context) (err error) { //url details
 		logrus.Error(err)
 		return response.SendResponse(c, 400, "Bind Fail")
 	}
-	resp, err := databases.QueryUrl((data).Short)
+	resp, err := databases.QueryUrl("visit/" + (data).Short)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return response.SendResponse(c, 400, "not found")
@@ -80,6 +78,7 @@ func UpdateUrl(c echo.Context) (err error) { //url details
 	data := new(model.UpdateInput)
 	if err = c.Bind(data); err != nil {
 		logrus.Error("Bind Fail")
+		return response.SendResponse(c, 400, "Bind Fail")
 	}
 	url := new(model.Url)
 	url.Origin = data.Origin
@@ -97,8 +96,11 @@ func DelUrl(c echo.Context) (err error) { //url details
 	data := new(model.QueryInput)
 	if err = c.Bind(data); err != nil {
 		logrus.Error("Bind Fail")
+		if err != nil {
+			return response.SendResponse(c, 400, "Bind Fail")
+		}
 	}
-	err = databases.DelUrl(data.Short)
+	err = databases.DelUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Del failed")
 	}
@@ -109,8 +111,10 @@ func PauseUrl(c echo.Context) error { //
 	data := new(model.DelInput)
 	if err := c.Bind(data); err != nil {
 		logrus.Error("Bind Failed")
+		return response.SendResponse(c, 400, "Bind error") //
+
 	}
-	err, resp := databases.PauseUrl(data.Short)
+	err, resp := databases.PauseUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Pause failed", resp)
 	}
@@ -120,11 +124,23 @@ func ContinueUrl(c echo.Context) error {
 	data := new(model.DelInput)
 	if err := c.Bind(data); err != nil {
 		logrus.Error(err)
-		return response.SendResponse(c, 200, "Bind error") //
+		return response.SendResponse(c, 400, "Bind error") //
 	}
-	err, resp := databases.ContinueUrl(data.Short)
+	err, resp := databases.ContinueUrl("visit/" + data.Short)
 	if err != nil {
 		return response.SendResponse(c, 400, "Continue failed", resp)
 	}
 	return response.SendResponse(c, 200, "Continue succeed", resp) //
+}
+func ShowUrls(c echo.Context) error {
+	res := new(model.ShowUrlsOutput)
+	err := model.DB.Debug().Where("id >?", 0).Find(&res.Urls).Error
+	logrus.Error(err)
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return response.SendResponse(c, 400, "not found")
+		}
+		return response.SendResponse(c, 400, "search failed", res)
+	}
+	return response.SendResponse(c, 200, "search succeed", res) //
 }
