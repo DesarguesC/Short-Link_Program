@@ -12,17 +12,7 @@ import (
 	"time"
 )
 
-// {host}/user/register (/:name/:email/:pwd/:secQ/:secA)
-
-var status string
-
 // {host}/user
-func Users_Judge(c echo.Context) error {
-	if status == "nil" {
-		return response.SendResponse(c, 900, "didn't login", status)
-	}
-	return response.SendResponse(c, 901, "login", status)
-}
 
 // {host}/user/register
 func Users_register(c echo.Context) error {
@@ -36,13 +26,28 @@ func Users_register(c echo.Context) error {
 	fmt.Println((*data).Name)
 	current_time := time.Now()
 	new_user := new(model.Users)
+	new_user.Name = (*data).Name
 
-	err := model.DB.Debug().Find(&new_user).Error
+	//err := model.DB.Debug().Find(&new_user).Error
 
-	if err != nil {
-		status = "nil"
-		return response.SendResponse(c, 100, "Registration Failed: This name has been used", err.Error())
+	err := model.DB.Limit(1).First(&new_user, "name = ?", (*data).Name).Error
+	//fmt.Println(result.Error)
+	//fmt.Println(result.Error == nil)
+
+	//temp := (*error)(nil)
+
+	if err == nil {
+		model.Status = "nil"
+		return response.SendResponse(c, 100, "Registration Failed: This user name has been used", err)
 	}
+	temp := new(model.Users)
+	temp.Email = (*data).Email
+	err = model.DB.Limit(1).First(&new_user, "email = ?", (*data).Email).Error
+	if err == nil {
+		model.Status = "nil"
+		return response.SendResponse(c, 100, "Registration Failed: This user email has been used", err)
+	}
+
 	(*new_user).Id = (*data).Id
 	(*new_user).Email = (*data).Email
 	(*new_user).Pwd = (*data).Pwd
@@ -70,24 +75,26 @@ func Users_register(c echo.Context) error {
 
 	err = model.DB.Debug().Create(&new_user).Error
 	if err != nil {
-		status = "nil"
-		return response.SendResponse(c, 000, "User create failed", status)
+		model.Status = "nil"
+		return response.SendResponse(c, 000, "User create failed", model.Status)
 	}
-	status = new_user.Name
-	return response.SendResponse(c, 101, "User creating success", status)
+	model.Status = new_user.Name
+	return response.SendResponse(c, 101, "User creating success", model.Status)
 
 }
 
-// {host}/user/login (/:email/:pwd)
-// -> query
+// {host}/user/login
 func User_login(c echo.Context) error {
+
+	if model.Status != "nil" {
+		return response.SendResponse(c, 104, "do not repeat login, you may logout first")
+	}
 
 	data := new(model.LoginInput)
 	if err := c.Bind(data); err != nil {
 		logrus.Error("Bind Failed")
 		return response.SendResponse(c, 400, "Bind Failed")
 	}
-	//return response.SendResponse(c, -100, "test", (*data).Email)
 
 	a_User := new(model.Users)
 	(*a_User).Email = (*data).Email
@@ -95,34 +102,43 @@ func User_login(c echo.Context) error {
 	pwd := a_User.Pwd
 	email := a_User.Email
 
-	//fmt.Println(email)
 	one := midware.LoginStruct{email, pwd}
 	valid := validator.New()
 	invalid_err := valid.Struct(one)
 	if invalid_err != nil {
 		return response.SendResponse(c, 105, "invalid login info format", email, pwd)
 	}
+	// validation
 
-	err := model.DB.Debug().Find(&a_User).Error
+	err := model.DB.Limit(1).First(&a_User, "email = ? AND pwd = ?", email, pwd).Error
 	if err != nil {
-		status = "nil"
-		return response.SendResponse(c, 102, "incorrect email or password", status)
+		model.Status = "nil"
+		return response.SendResponse(c, 102, "incorrect email or password", model.Status)
 	}
-	//if (*a_User).Pwd != pwd {
-	//	status = "nil"
-	//	return response.SendResponse(c, 102, "incorrect email or password", status)
-	//}
-	status = a_User.Name
-	return response.SendResponse(c, 103, "login successfully", status)
+
+	fmt.Println((*a_User).Name)
+	fmt.Println((*a_User).Email)
+	fmt.Println((*a_User).Pwd)
+	fmt.Println((*a_User).SecQ)
+	fmt.Println((*a_User).SecA)
+
+	model.Status = (*a_User).Name
+	(*a_User).LatestTime = time.Now()
+
+	model.DB.Where(&a_User, "email = ?", email).Update("latesttime", time.Now())
+	// 这里还需要记录ip地址
+
+	return response.SendResponse(c, 103, "login successfully", model.Status)
 }
 
 // {host}/user/logout
+
 func User_logout(c echo.Context) error {
-	if status == "nil" {
-		return response.SendResponse(c, 900, "didn' login", status)
+	if model.Status == "nil" {
+		return response.SendResponse(c, 900, "didn't login", model.Status)
 	}
-	status = "nil"
-	return response.SendResponse(c, 900, "didn't login", status)
+	model.Status = "nil"
+	return response.SendResponse(c, 901, "logout", model.Status)
 }
 
 // {host}/user/security
@@ -133,7 +149,6 @@ func User_reset_pwd(c echo.Context) error {
 		logrus.Error("Bind Failed")
 	}
 
-	//va_user := new(middleware.SecurityStruct)
 	name := (*data).Name
 	email := (*data).Email
 	secA := (*data).SecA
@@ -150,30 +165,33 @@ func User_reset_pwd(c echo.Context) error {
 	(*a_user).Name = (*data).Name
 	(*a_user).Email = (*data).Email
 
-	err := model.DB.Debug().Find(&a_user).Error
+	err := model.DB.First(&a_user, "name = ? AND email = ?", (*data).Name, (*data).Email).Error
 	if err != nil {
 		return response.SendResponse(c, 221, "no user found or unpaired Name and Email")
 	}
 
 	if (*a_user).SecA != (data).SecA {
-		return response.SendResponse(c, 200, "incorrect answer", status)
+		return response.SendResponse(c, 200, "incorrect answer", model.Status)
 	}
-	(*a_user).Pwd = (*data).Pwd_new
-	return response.SendResponse(c, 201, "pwd reset success", status)
+	err = model.DB.Model(&a_user).Where("name = ?", (*data).Name).Update("pwd", new_pwd).Error
+	if err != nil {
+		return response.SendResponse(c, 231, "Unknown Error occurred when updating", new_pwd)
+	}
+	return response.SendResponse(c, 201, "pwd reset success", model.Status)
 }
 
 // {host}/user/info
 
 func User_get(c echo.Context) error {
-	name := status
-	if status == "nil" {
-		return response.SendResponse(c, 900, "didn't login", status)
+	name := model.Status
+	if model.Status == "nil" {
+		return response.SendResponse(c, 900, "didn't login", model.Status)
 	}
 	a_user := model.Users{}
 	a_user.Name = name
-	err := model.DB.Debug().Find(&a_user).Error
+	err := model.DB.First(&a_user, "name = ?", name).Error
 	if err != nil {
-		return response.SendResponse(c, 111, "no User (FATAL)", status)
+		return response.SendResponse(c, 111, "Unknown Error: No User (FATAL)", model.Status)
 	}
 	email := a_user.Email
 	return response.SendResponse(c, 112, "query succeeded", name, email)
@@ -182,23 +200,24 @@ func User_get(c echo.Context) error {
 // {host}/user/record/get
 // IP 地址获取办法还有些疑惑
 func User_login_get(c echo.Context) error {
-	if status == "nil" {
-		return response.SendResponse(c, 900, "didn't login", status)
+	if model.Status == "nil" {
+		return response.SendResponse(c, 900, "didn't login", model.Status)
 	}
-	name := status
-	a_user := model.Users{}
-	a_user.Name = name
-	err := model.DB.Debug().Find(&a_user).Error
+	name := model.Status
+	a_user := new(model.Users)
+	(*a_user).Name = name
+	err := model.DB.First(&a_user, "name = ?", name).Error
 	if err != nil {
-		return response.SendResponse(c, 111, "no User (FATAL)", status)
+		return response.SendResponse(c, 111, "no User (FATAL)", model.Status)
 	}
-	return response.SendResponse(c, 310, "getting information succeeded", a_user.LatestTime, a_user.Name, status)
+	return response.SendResponse(c, 310, "getting information succeeded", a_user.Name, a_user.LatestTime, model.Status)
+	// 这里还需要返回ip地址
 }
 
 // {host}/user/pwdreset
 func User_pwd_reset(c echo.Context) error {
-	if status == "nil" {
-		return response.SendResponse(c, 900, "didn't login", status)
+	if model.Status == "nil" {
+		return response.SendResponse(c, 900, "didn't login", model.Status)
 	}
 
 	data := new(model.ResetPwdInput)
@@ -227,8 +246,8 @@ func User_pwd_reset(c echo.Context) error {
 		return response.SendResponse(c, 599, "no user found")
 	}
 	if (*a_user).Pwd != (*data).Pwdold {
-		return response.SendResponse(c, 600, "incorrect old password", status)
+		return response.SendResponse(c, 600, "incorrect old password", model.Status)
 	}
 	(*a_user).Pwd = (*data).Pwdnew
-	return response.SendResponse(c, 601, "password reset succeeded", status)
+	return response.SendResponse(c, 601, "password reset succeeded", model.Status)
 }

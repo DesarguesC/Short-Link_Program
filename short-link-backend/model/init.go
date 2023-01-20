@@ -8,8 +8,10 @@ import (
 )
 
 var DB *gorm.DB
+var Status string
 
 func Init() {
+	Status = "nil"
 	connectDatabase()
 	err := DB.AutoMigrate(&Url{}, &Users{}) // TODO: add table structs here
 	if err != nil {

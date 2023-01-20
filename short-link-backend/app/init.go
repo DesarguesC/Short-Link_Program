@@ -7,6 +7,8 @@ import (
 
 var e *echo.Echo
 
+//var Status string
+
 func InitWebFramework() {
 	e = echo.New()
 	e.HideBanner = true

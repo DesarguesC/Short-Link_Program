@@ -24,7 +24,7 @@ type Users struct {
 	SecA  string `gorm:"type:varchar(100)" form:"seca" json:"seca"`
 	//IPpub      string    `gorm:"type:varchar(100)"form:"ippub" json:"ippub"`
 	//IPpri      string    `gorm:"type:varchar(100)"form:"ippri" json:"ippri"`
-	LatestTime time.Time `gorm:"type:datetime" form:"expire_time" json:"expire_time"`
+	LatestTime time.Time `gorm:"type:datetime" form:"latesttime" json:"latesttime"`
 	// url[]	?
 	// Id: auto-increasement.
 	// name,email,pwd,secq,seca mustn't contain special characters
