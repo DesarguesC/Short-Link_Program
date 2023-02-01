@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import Delete from "./components/Delete";
 import Pause from "./components/Pause";
 import Update from "./components/Update";
+import List from "./components/List";
 
 export default class App extends Component {
   render() {
@@ -20,6 +21,7 @@ export default class App extends Component {
           <Route path="/delete" exact element={<Delete />} />
           <Route path="/pause" exact element={<Pause />} />
           <Route path="/update" exact element={<Update />} />
+          <Route path="/query" exact element={<List />} />
         </Routes>
       </div>
     );

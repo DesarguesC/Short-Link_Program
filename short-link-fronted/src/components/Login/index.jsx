@@ -27,6 +27,8 @@ export default class Login extends Component {
           this.refs.form.reset();
         } else if (data.code === 105) {
           swal(`登陆失败`);
+        } else if (data.code === 104) {
+          swal(`您已登录，请勿重复登录`);
         }
       })
       .catch((error) => console.log("error is", error));
