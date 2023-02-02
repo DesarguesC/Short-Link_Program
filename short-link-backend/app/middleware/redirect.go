@@ -37,7 +37,7 @@ func RedirectMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		err = c.Redirect(302, target)
 		if err != nil {
 			logrus.Error(err)
-			return response.SendResponse(c, 400, "redict error")
+			return response.SendResponse(c, 400, "redirect error")
 		}
 		return next(c)
 	}

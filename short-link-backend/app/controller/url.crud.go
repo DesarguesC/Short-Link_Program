@@ -15,7 +15,7 @@ func CreateUrl(c echo.Context) (err error) {
 	data := new(model.CreateInput)
 	if err = c.Bind(data); err != nil {
 		logrus.Error(err)
-		return response.SendResponse(c, 400, "Bind Failed")
+		return response.SendResponse(c, 400, "Bind Failed", err, data)
 	}
 	url := new(model.Url)
 	var IsDefined bool = false // 是否自定义
