@@ -44,6 +44,9 @@ export default class Nav extends Component {
                 <Link className="nav-link" to="/update">
                   更新
                 </Link>
+                <Link className="nav-link" to="/list">
+                  列表
+                </Link>
               </div>
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
