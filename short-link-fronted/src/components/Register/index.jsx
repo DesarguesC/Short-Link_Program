@@ -24,7 +24,7 @@ export default class Register extends Component {
       .then((data) => {
         console.log("data is", data);
         if (data.code === 101) {
-          swal(`创建用户成功！`);
+          swal(`创建用户成功，已帮您自动登录！`);
           this.refs.form.reset();
         } else if (data.code === 107) {
           swal("用户创建失败");
