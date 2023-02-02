@@ -21,7 +21,7 @@ export default class App extends Component {
           <Route path="/delete" exact element={<Delete />} />
           <Route path="/pause" exact element={<Pause />} />
           <Route path="/update" exact element={<Update />} />
-          <Route path="/query" exact element={<List />} />
+          <Route path="/list" exact element={<List />} />
         </Routes>
       </div>
     );

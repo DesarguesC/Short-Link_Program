@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class List extends Component {
   fget = async () => {
-    await fetch("http://localhost:1926/api/url/update")
+    await fetch("http://localhost:1926/api/url/get")
       .then((response) => response.json())
       .then((data) => {
         console.log("data is", data);
