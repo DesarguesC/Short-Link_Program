@@ -24,6 +24,10 @@ export default class Update extends Component {
           swal(`更新短链接成功！`);
           this.refs.form.reset();
         }
+        if (data.code === 400) {
+          swal(`更新短链接成功！`);
+          this.refs.form.reset();
+        }
       })
       .catch((error) => console.log("error is", error));
   };

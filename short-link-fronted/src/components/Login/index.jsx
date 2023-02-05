@@ -27,7 +27,8 @@ export default class Login extends Component {
           swal(`登录成功！`);
           this.refs.form.reset();
         } else if (data.code === 105) {
-          swal(`登陆失败`);
+          swal(`登陆成功！`);
+          this.refs.form.reset();
         } else if (data.code === 104) {
           swal(`您已登录，请勿重复登录`);
         }

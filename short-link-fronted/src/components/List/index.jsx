@@ -19,25 +19,21 @@ export default class List extends Component {
 
   renderList() {
     const { webs } = this.state;
-    console.log(webs);
     return webs.map((web) => {
       return (
-        // <div key={web.id}>
-        //   <div>origin:{web.origin}</div>
-        //   <div>short:{web.short}</div>
-        // </div>
-
-        <ul className="list-group" key={web.id}>
-          <li className="list-group-item">
-            <div>原网址:{web.origin}</div>
-            <div>短链接:http://localhost:1926/{web.short}</div>
-          </li>
-        </ul>
+        <li className="list-group-item" key={web.id}>
+          <div>原网址:{web.origin}</div>
+          <div>短链接:http://localhost:1926/{web.short}</div>
+        </li>
       );
     });
   }
 
   render() {
-    return <div>{this.renderList()}</div>;
+    return (
+      <ul className="list-group" style={{ width: "75%", margin: "auto" }}>
+        {this.renderList()}
+      </ul>
+    );
   }
 }
