@@ -10,6 +10,7 @@ export default class Login extends Component {
   };
 
   fpost = async () => {
+    console.log(this.state);
     await fetch("http://localhost:1926/api/user/login", {
       method: "post",
       headers: {
@@ -33,16 +34,6 @@ export default class Login extends Component {
       })
       .catch((error) => console.log("error is", error));
   };
-
-  // fpost2 = () => {
-  //   axios({
-  //     method: "post",
-  //     url: "/user/login",
-  //     data: this.state,
-  //   }).then((res) => {
-  //     console.log(res);
-  //   });
-  // };
 
   handleSubmit = (e) => {
     e.preventDefault();
