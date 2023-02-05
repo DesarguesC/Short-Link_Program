@@ -5,11 +5,12 @@ export default class Update extends Component {
   state = {
     origin: "",
     comment: "",
-    startTime: "",
-    expireTime: "",
+    startTime: "2022-01-01T08:00:00+08:00",
+    expireTime: "2023-11-17T08:00:00+08:00",
   };
 
   fpost = async () => {
+    console.log(this.state);
     await fetch("http://localhost:1926/api/url/update", {
       method: "post",
       headers: {
@@ -25,8 +26,7 @@ export default class Update extends Component {
           this.refs.form.reset();
         }
         if (data.code === 400) {
-          swal(`更新短链接成功！`);
-          this.refs.form.reset();
+          swal(`更新短链接失败！`);
         }
       })
       .catch((error) => console.log("error is", error));
@@ -40,6 +40,12 @@ export default class Update extends Component {
   saveFormData = (dataType) => {
     return (event) => {
       this.setState({ [dataType]: event.target.value });
+    };
+  };
+
+  saveTimeData = (dataType) => {
+    return (event) => {
+      this.setState({ [dataType]: event.target.value + ":00+08:00" });
     };
   };
 
@@ -90,7 +96,7 @@ export default class Update extends Component {
               aria-describedby="basic-addon3"
               placeholder="留空表示不限制"
               name="startTime"
-              onChange={this.saveFormData("startTime")}
+              onChange={this.saveTimeData("startTime")}
             />
           </div>
           <strong htmlFor="basic-url" className="form-label">
@@ -104,7 +110,7 @@ export default class Update extends Component {
               aria-describedby="basic-addon3"
               placeholder="留空表示不限制"
               name="expireTime"
-              onChange={this.saveFormData("expireTime")}
+              onChange={this.saveTimeData("expireTime")}
             />
           </div>
           <button
