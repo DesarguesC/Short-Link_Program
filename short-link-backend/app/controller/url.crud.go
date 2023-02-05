@@ -77,8 +77,8 @@ func QueryUrl(c echo.Context) (err error) { //url details
 func UpdateUrl(c echo.Context) (err error) { //url details
 	data := new(model.UpdateInput)
 	if err = c.Bind(data); err != nil {
-		logrus.Error("Bind Fail")
-		return response.SendResponse(c, 400, "Bind Fail")
+		logrus.Error("Bind Fail", err)
+		return response.SendResponse(c, 400, "Bind Fail", data)
 	}
 	url := new(model.Url)
 	url.Origin = data.Origin
@@ -89,7 +89,7 @@ func UpdateUrl(c echo.Context) (err error) { //url details
 	if err != nil {
 		return response.SendResponse(c, 400, "update failed")
 	}
-	return response.SendResponse(c, 200, "update succeed", url.Origin) //
+	return response.SendResponse(c, 200, "update succeed", url) //
 }
 
 func DelUrl(c echo.Context) (err error) { //url details
